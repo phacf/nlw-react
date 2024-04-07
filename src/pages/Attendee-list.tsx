@@ -5,6 +5,8 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useFetchAtendees } from '../services/useFetchAtendees'
+import { setUrlState } from '../helpers/setUrlState'
+import { getUrlState } from '../helpers/getUrlState'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
@@ -21,17 +23,11 @@ export function AttendeeList() {
   const url = new URL(window.location.toString())
 
   const [search, setSearch] = useState(() => {
-    if (url.searchParams.has('search')) {
-      return url.searchParams.get('search') ?? ''
-    }
-    return ''
+    return getUrlState('search') || ''
   })
 
   const [page, setPage] = useState(() => {
-    if (url.searchParams.has('page')) {
-      return Number(url.searchParams.get('page'))
-    }
-    return 1
+    return Number(getUrlState('page')) || 1
   })
 
   const [atendees, setAtendees] = useState<Attendace[]>([])
@@ -56,14 +52,12 @@ export function AttendeeList() {
   }, [page, search])
 
   function setCurrentSearch(search: string) {
-    url.searchParams.set('search', search)
-    window.history.pushState({}, '', url)
+    setUrlState('search', search)
     setSearch(search)
   }
 
   function setCurrentPage(page: number) {
-    url.searchParams.set('page', String(page))
-    window.history.pushState({}, '', url)
+    setUrlState('page', String(page))
     setPage(page)
   }
 

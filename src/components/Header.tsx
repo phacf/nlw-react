@@ -2,20 +2,16 @@ import { useState } from 'react'
 import { NavLink } from '.'
 import nlwUniteIcon from '../assets/headerIcon.svg'
 import { routes } from '../navigation/navigationProvider'
+import { getUrlState } from '../helpers/getUrlState'
+import { setUrlState } from '../helpers/setUrlState'
 
 export function Header() {
-  const url = new URL(window.location.toString())
-
   const [selected, setSelected] = useState(() => {
-    if (url.searchParams.has('section')) {
-      return Number(url.searchParams.get('section'))
-    }
-    return 0
+    return Number(getUrlState('section')) || 0
   })
 
   function setCurrentSection(section: number) {
-    url.searchParams.set('section', String(section))
-    window.history.pushState({}, '', url)
+    setUrlState('section', String(section))
     setSelected(section)
   }
 
