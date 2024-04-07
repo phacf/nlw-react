@@ -7,11 +7,11 @@ import { setUrlState } from '../helpers/setUrlState'
 
 export function Header() {
   const [selected, setSelected] = useState(() => {
-    return Number(getUrlState('section')) || 0
+    return getUrlState('section') || ''
   })
 
-  function setCurrentSection(section: number) {
-    setUrlState('section', String(section))
+  function setCurrentSection(section: string) {
+    setUrlState('section', section)
     setSelected(section)
   }
 
@@ -21,7 +21,7 @@ export function Header() {
       <nav className='flex items-center gap-5'>
           {
             routes.map(({ label }, index) => (
-              <NavLink key={index} active={index === selected} onClick={()=> setCurrentSection(index)}  label={label} />
+              <NavLink key={index} active={label === selected} onClick={()=> setCurrentSection(label)}  label={label} />
             ))}
       </nav>
     </header>
